@@ -1,0 +1,43 @@
+<div class="wrapper"> 
+    {{ name }}
+    <div>
+      My custom panel in the side bar
+    </div>
+    <div>
+      <button id="id1">
+        My button to show snackbar
+      </button></div>
+  <div>
+      <button id="id2">
+        My button to show modal
+      </button>
+  </div>
+</div>
+<script>
+ (async function () {
+        const sdk = await new AppExtensionsSdk().initialize();
+        await sdk.execute(AppExtensionsSdk.Command.RESIZE, { height: 120 });
+    })(); 
+  
+  
+async function showSnackBar(message) {
+    const sdk = await new AppExtensionsSdk().initialize();
+    await sdk.execute(AppExtensionsSdk.Command.SHOW_SNACKBAR, {
+        message
+    });
+}
+  
+  async function showModal() {
+    const sdk = await new AppExtensionsSdk().initialize();
+    const { status } = await sdk.execute(AppExtensionsSdk.Command.OPEN_MODAL, {
+            type: AppExtensionsSdk.Modal.CUSTOM_MODAL, 
+            action_id: "8fc1674c-0368-40d7-8aa1-69a6200b1704", // ID associated with the Custom UI Modal (visible in Marketplace Manager)
+            });
+};
+  
+  const btn = document.getElementById("id1");
+  const btn2 = document.getElementById("id2");
+  btn.addEventListener("click", () => {showSnackBar("Pressed button")})
+  btn2.addEventListener("click", () => {showModal()})
+
+</script>
